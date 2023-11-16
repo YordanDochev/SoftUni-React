@@ -3,16 +3,16 @@ export default function CatalogGameItem({
     title,
     category,
     imageUrl,
-}){
-    return(
+}) {
+    return (
         <div className="allGames">
-                <div className="allGames-info">
-                    <img src={imageUrl} />
-                    <h6>{title}</h6>
-                    <h2>{category}</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
-
+            <div className="allGames-info">
+                <img src={imageUrl} />
+                <h6>{title}</h6>
+                <h2>{category}</h2>
+                <a href="#" className="details-button">Details</a>
             </div>
+
+        </div>
     )
 }

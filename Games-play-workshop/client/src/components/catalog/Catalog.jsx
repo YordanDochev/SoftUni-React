@@ -17,7 +17,7 @@ export default function Catalog() {
             {games.map(game => (
                 <CatalogGameItem key={game._id} {...game} />
             ))}
-            {games.length === 0 && <h3 class="no-articles">No articles yet</h3>}
+            {games.length === 0 && <h3 className="no-articles">No articles yet</h3>}
             
         </section>
     )
