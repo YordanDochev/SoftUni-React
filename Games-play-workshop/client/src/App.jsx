@@ -2,6 +2,7 @@ import Header from "./components/header/Header"
 import Home from "./components/home/Home"
 import Catalog from "./components/catalog/Catalog"
 import CreateGame from "./components/create-game/CreateGame"
+import Login from "./components/login/Login"
 
 import {Routes,Route} from "react-router-dom"
 
@@ -15,6 +16,7 @@ function App() {
                 <Route path ="/" element={<Home/>}/>
                 <Route path ="/catalog" element={<Catalog/>}/>
                 <Route path ="/games/create" element={<CreateGame/>}/>
+                <Route path ="/login" element={<Login/>}/>
             </Routes>
             
         </div>
