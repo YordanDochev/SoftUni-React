@@ -1,5 +1,8 @@
 import { useState } from "react"
 
+import {useNavigate} from 'react-router-dom'
+
+import * as gameService from '../../services/gameService'
 const formInitialState = {
     title: '',
     category: '',
@@ -9,6 +12,8 @@ const formInitialState = {
 
 }
 export default function CreateGame() {
+
+    const navigate = useNavigate();
 
     const [formValues, setFormValues] = useState(formInitialState);
 
@@ -30,10 +35,17 @@ export default function CreateGame() {
         }))
     }
 
-    const onSubmitCreateGame = (e) => {
+    const onSubmitCreateGame = async (e) => {
         e.preventDefault();
+        try {
+            await gameService.create(formValues)
+            
+            setFormValues(formInitialState)
 
-        console.log(formValues);
+            navigate('/catalog')
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
