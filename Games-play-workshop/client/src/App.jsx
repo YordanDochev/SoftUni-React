@@ -22,21 +22,31 @@ function App() {
     const navigate = useNavigate();
 
     const loginSubmitHanlder = async (values) => {
-        const result = await authService.login(values.email,values.password)
-        
+        const result = await authService.login(values.email, values.password)
+
         setAuth(result)
 
         navigate(Path.Home)
     }
 
+    const registerSubmitHandler = async (values) => {
+        console.log(values);
+    }
 
+    const values = {
+        loginSubmitHanlder,
+        registerSubmitHandler,
+        username:auth.username,
+        email: auth.email,
+        isAuthenticated: !!auth.accessToken
+    }
 
     return (
         <div id="box">
-            <AuthContext.Provider value={{loginSubmitHanlder}}>
+            <AuthContext.Provider value={values}>
                 <Header />
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path={Path.Home} element={<Home />} />
                     <Route path="/catalog" element={<Catalog />} />
                     <Route path="/games/create" element={<CreateGame />} />
                     <Route path="/login" element={<Login />} />
