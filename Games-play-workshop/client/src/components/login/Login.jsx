@@ -5,8 +5,10 @@ const LoginFormKyes = {
     Password: 'password',
 };
 
-export default function Login() {
-    const { values, onChange, onSubmit } = useForm({
+export default function Login({
+    loginSubmitHanlder
+}) {
+    const { values, onChange, onSubmit } = useForm(loginSubmitHanlder,{
         [LoginFormKyes.Email]: '',
         [LoginFormKyes.Password]: '',
     });
