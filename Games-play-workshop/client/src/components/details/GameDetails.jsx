@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 
+import AuthContext from "../../contexts/authContext"
 import * as gameService from "../../services/gameService"
 import * as commentService from "../../services/commentService"
 
 export default function GameDetails() {
+    const { email } = useContext(AuthContext)
     const { gameId } = useParams();
     const [game, setGame] = useState({})
     const [comments, setComments] = useState([])
-
+    console.log(email);
     useEffect(() => {
         gameService.getOne(gameId)
             .then(setGame)
@@ -21,12 +23,14 @@ export default function GameDetails() {
         const formData = new FormData(e.currentTarget)
         const newComment = await commentService.create(
             gameId,
-            formData.get('username'),
             formData.get('comment'),
         )
         setComments(state => ([
             ...state,
-            newComment
+            {
+                ...newComment,
+                owner: { email },
+            }
         ]))
     }
     return (
@@ -48,9 +52,9 @@ export default function GameDetails() {
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                        {comments.map(({ _id, username, text }) => (
-                            <li key = {_id} className="comment">
-                                <p>{username}: {text}.</p>
+                        {comments.map(({ _id, text, owner: { email } }) => (
+                            <li key={_id} className="comment">
+                                <p>{email}: {text}.</p>
                             </li>
                         ))}
 
@@ -68,7 +72,6 @@ export default function GameDetails() {
             <article className="create-comment">
                 <label>Add new comment:</label>
                 <form className="form" onSubmit={addComentHandler}>
-                    <input type="text" placeholder="Username" name="username" />
                     <textarea name="comment" placeholder="Comment......"></textarea>
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
