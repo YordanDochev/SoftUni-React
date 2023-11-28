@@ -1,38 +1,48 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom"
 
 import AuthContext from "../../contexts/authContext"
 import * as gameService from "../../services/gameService"
 import * as commentService from "../../services/commentService"
 
+import reducer from "./commentReducer";
+import useForm from "../../hooks/useForm";
+
 export default function GameDetails() {
-    const { email } = useContext(AuthContext)
+    const { email, _id } = useContext(AuthContext)
     const { gameId } = useParams();
     const [game, setGame] = useState({})
-    const [comments, setComments] = useState([])
-    console.log(email);
+    const [comments, dispatch] = useReducer(reducer, [])
     useEffect(() => {
         gameService.getOne(gameId)
             .then(setGame)
         commentService.getAll(gameId)
-            .then(setComments)
+            .then((result) => {
+                dispatch({
+                    type: 'GET_ALL_COMMENTS',
+                    payload: result
+                })
+            })
     }, [gameId])
-    const addComentHandler = async (e) => {
-        e.preventDefault();
+    const addComentHandler = async (values) => {
 
-        const formData = new FormData(e.currentTarget)
         const newComment = await commentService.create(
             gameId,
-            formData.get('comment'),
+            values.comment
         )
-        setComments(state => ([
-            ...state,
-            {
-                ...newComment,
-                owner: { email },
-            }
-        ]))
+
+        newComment.owner = { email }
+
+        dispatch({
+            type: 'ADD_COMMENT',
+            payload: newComment
+        })
     }
+
+    const { values, onChange, onSubmit } = useForm(addComentHandler, {
+        comment: ''
+    })
+
     return (
         <section id="game-details">
             <h1>Game Details</h1>
@@ -62,17 +72,19 @@ export default function GameDetails() {
                     {comments.length === 0 && <p className="no-comment">No comments.</p>}
                 </div>
 
-                {/* <!-- Edit/Delete buttons ( Only for creator of this game )  -->
-                <div className="buttons">
-                    <a href="#" className="button">Edit</a>
-                    <a href="#" className="button">Delete</a>
-                </div> */}
+                {game._ownerId === _id && (
+                    <div className="buttons">
+                        <a href="#" className="button">Edit</a>
+                        <a href="#" className="button">Delete</a>
+                    </div>
+                )}
+
             </div>
 
             <article className="create-comment">
                 <label>Add new comment:</label>
-                <form className="form" onSubmit={addComentHandler}>
-                    <textarea name="comment" placeholder="Comment......"></textarea>
+                <form className="form" onSubmit={onSubmit}>
+                    <textarea name="comment" onChange={onChange} value={values.comment} placeholder="Comment......"></textarea>
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
             </article>
