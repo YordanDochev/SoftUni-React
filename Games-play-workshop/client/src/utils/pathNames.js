@@ -1,6 +1,7 @@
 const Path = {
      Home:'/',
-     Logout:'/logout'
+     Logout:'/logout',
+     Edit:'/game/:gameId/edit'
 }
 
 export default Path

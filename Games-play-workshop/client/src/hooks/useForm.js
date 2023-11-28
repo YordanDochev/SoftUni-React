@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
-export default function useForm(loginSubmitHanlder,initialValue) {
+export default function useForm(submitHanlder,initialValue) {
   const [values, setFormValue] = useState(initialValue);
     
 //   useEffect(() => {
@@ -17,7 +17,7 @@ export default function useForm(loginSubmitHanlder,initialValue) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    loginSubmitHanlder(values)
+    submitHanlder(values)
   };
 
   return {

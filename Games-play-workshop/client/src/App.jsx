@@ -11,6 +11,7 @@ import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import GameDetails from "./components/details/GameDetails"
 import Logout from "./components/logout/Logout"
+import EditGame from "./components/edit/EditGame"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/game/:gameId/details" element={<GameDetails />} />
                     <Route path={Path.Logout} element={<Logout />} />
+                    <Route path={Path.Edit} element={<EditGame />} />
                 </Routes>
             </AuthProvider>
         </div>
