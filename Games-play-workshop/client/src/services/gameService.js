@@ -24,3 +24,11 @@ export const edit = async (gameId,gameData) => {
 
     return result;
 }
+
+export const remove = async(gameId) => await request.del(`${baseUrl}/${gameId}`)
+
+export const getLates = async () => {
+    const result = await request.get(`${baseUrl}?sortBy=_createdOn desc offset=0&pageSize=3`);
+
+    return result 
+}
